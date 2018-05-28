@@ -10,17 +10,20 @@ import java.util.Stack;
  **/
 public class MyStack<T> {
     private ArrayList<T> list;
-    private int size;
     private int top = 0; //栈顶索引
 
     public MyStack(int size) {
-        this.size = size;
         this.list = new ArrayList<T>(size);
     }
 
     //获取长度
     public int size(){
         return list.size();
+    }
+
+    //获取实际长度
+    public int realSize(){
+        return top;
     }
 
     //入栈
@@ -46,13 +49,22 @@ public class MyStack<T> {
         return top == 0;
     }
 
+    //检查是否数组越界
+    @Deprecated
     private void checkOutOfBounds(int index) {
-        if (index > size || index < 0)
-            throw new IndexOutOfBoundsException("size is : " + size + ",index is : " + index);
+        if (index > size() || index < 0)
+            throw new IndexOutOfBoundsException("size is : " + size() + ",index is : " + index);
     }
 
     public static void main(String[] args) {
-        ArrayList<String> array = new ArrayList<>(50);
-        System.out.println(array.size());
+        MyStack<Object> s = new MyStack<>(20);
+        s.push("aaa");
+        s.push(3);
+        s.push(3.5);
+        System.out.println(s.size());
+        System.out.println(s.getTop());
+        System.out.println(s.pop());
+        System.out.println(s.getTop());
+        System.out.println(s.realSize());
     }
 }
