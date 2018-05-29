@@ -229,7 +229,6 @@ public class BinarySearchTree<T extends Comparable<T>> {
             this.right = right;
             this.data = data;
         }
-
     }
 
     public static void main(String[] args) {
