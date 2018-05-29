@@ -1,7 +1,6 @@
 package com.wujie.learning.collection;
 
-import java.util.LinkedList;
-import java.util.Queue;
+import java.util.*;
 
 /**
  * @description: 二叉树
@@ -44,7 +43,7 @@ public class BinarySearchTree<T extends Comparable<T>> {
             return false;
         }
         if(root == null){
-            root = new Node<T>(null,null,t);
+            root = new Node<T>(null,null,null,t);
             return true;
         }
 
@@ -52,14 +51,14 @@ public class BinarySearchTree<T extends Comparable<T>> {
         while(true){
             if(t.compareTo(x.data) < 0){
                if(x.left == null){
-                    x.left = new Node<T>(null,null,t);
+                    x.left = new Node<T>(null,null, x, t);
                     break;
                }else {
                     x = x.left;
                }
             }else if(t.compareTo(x.data) > 0) {
                 if(x.right == null){
-                    x.right = new Node<T>(null,null,t);
+                    x.right = new Node<T>(null,null,x,t);
                     break;
                 }else {
                     x = x.right;
@@ -221,13 +220,36 @@ public class BinarySearchTree<T extends Comparable<T>> {
     private static class Node<T>{
         Node<T> left;
         Node<T> right;
+        Node<T> parent; //便于查找中序后继
         T data;
         int state;
 
-        Node(Node<T> left, Node<T> right, T data){
+        Node(Node<T> left, Node<T> right, Node<T> parent, T data){
             this.left = left;
             this.right = right;
             this.data = data;
+            this.parent = parent;
+        }
+    }
+
+    public Node<T> successor(Node<T> n) {
+        if (n == null)
+            return null;
+        Node<T> p;
+        if (n.right != null) {
+            p = n.right;
+            while (p.left != null) {
+                p = p.left;
+            }
+            return p;
+        }
+        else {
+            p = n.parent;
+            while (p != null && p.left != n) {
+                n = p;
+                p = n.parent;
+            }
+            return p;
         }
     }
 
@@ -238,5 +260,6 @@ public class BinarySearchTree<T extends Comparable<T>> {
         bTree.insert(3);
         bTree.postOrderWithoutRecurs();
         bTree.layerTraverse();
+
     }
 }
