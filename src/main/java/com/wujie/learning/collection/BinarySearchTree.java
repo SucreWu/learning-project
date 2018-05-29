@@ -198,27 +198,27 @@ public class BinarySearchTree<T extends Comparable<T>> {
         }
     }
 
-        //按层遍历
-        private void layerTraverse(){
-            if (root == null){
-                return;
+    //按层遍历
+    private void layerTraverse(){
+        if (root == null){
+            return;
+        }
+        Node<T> current ;
+        LinkedList<Node<T>> queue = new LinkedList<Node<T>>();
+        queue.offer(root);
+        while(!queue.isEmpty()){
+            current = queue.poll();
+            System.out.println(current.data);
+            if(current.left != null){
+                queue.offer(current.left);
             }
-            Node<T> current ;
-            LinkedList<Node<T>> queue = new LinkedList<Node<T>>();
-            queue.offer(root);
-            while(!queue.isEmpty()){
-                current = queue.poll();
-                System.out.println(current.data);
-                if(current.left != null){
-                    queue.offer(current.left);
-                }
-                if(current.right != null){
-                    queue.offer(current.right);
-                }
+            if(current.right != null){
+                queue.offer(current.right);
             }
         }
+    }
 
-        private static class Node<T>{
+    private static class Node<T>{
         Node<T> left;
         Node<T> right;
         T data;
