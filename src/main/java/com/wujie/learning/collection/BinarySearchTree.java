@@ -1,5 +1,8 @@
 package com.wujie.learning.collection;
 
+import java.util.LinkedList;
+import java.util.Queue;
+
 /**
  * @description: 二叉树
  * @author: wujie
@@ -102,11 +105,118 @@ public class BinarySearchTree<T extends Comparable<T>> {
         System.out.println(x.data);
     }
 
-    public void midOrderWithoutRecurs() {
-        if (root == null)
+    //非递归前序遍历
+    public void preOrderWithoutRecurs(){
+        if (root == null){
             return;
+        }
+
+        MyStack<Node<T>> stack = new MyStack<>(50);
+        Node<T> current;
+        stack.push(root);
+        while(!stack.isEmpty()){
+            current = stack.getTop();
+            if(current.state == 0){
+                System.out.println(current.data);
+                current.state = 1;
+            }else if (current.state == 1){
+                if(current.left != null){
+                    stack.push(current.left);
+                }
+                current.state = 2;
+            }else if(current.state == 2){
+                if(current.right != null){
+                    stack.push(current.right);
+                }
+                current.state = 3;
+            }else if (current.state == 3){
+                stack.pop();
+                current.state = 0;
+            }
+        }
     }
 
+    //非递归中序遍历
+    public void inOrderWithoutRecurs() {
+        if (root == null){
+            return;
+        }
+
+        MyStack<Node<T>> stack = new MyStack<>(50);
+        Node<T> current;
+        stack.push(root);
+        while(!stack.isEmpty()){
+            current = stack.getTop();
+            if(current.state == 0){
+                if(current.left != null){
+                    stack.push(current.left);
+                }
+                current.state = 1;
+            }else if (current.state == 1){
+                System.out.println(current.data);
+                current.state = 2;
+            }else if (current.state == 2){
+                if(current.right != null){
+                    stack.push(current.right);
+                }
+                current.state = 3;
+            }else if (current.state == 3){
+                stack.pop();
+                current.state = 0;
+            }
+        }
+    }
+
+    //非递归后序遍历
+    public void postOrderWithoutRecurs(){
+        if (root == null){
+            return;
+        }
+
+        MyStack<Node<T>> stack = new MyStack<>(50);
+        Node<T> current;
+        stack.push(root);
+        while(!stack.isEmpty()){
+            current = stack.getTop();
+            if(current.state == 0){
+                if(current.left != null){
+                    stack.push(current.left);
+                }
+                current.state = 1;
+            }else if (current.state == 1){
+                if(current.right != null){
+                    stack.push(current.right);
+                }
+                current.state = 2;
+            }else if(current.state == 2){
+                System.out.println(current.data);
+                current.state = 3;
+            }else if (current.state == 3){
+                stack.pop();
+                current.state = 0;
+            }
+        }
+    }
+
+        //按层遍历
+        private void layerTraverse(){
+            if (root == null){
+                return;
+            }
+            Node<T> current ;
+            LinkedList<Node<T>> queue = new LinkedList<Node<T>>();
+            queue.offer(root);
+            while(!queue.isEmpty()){
+                current = queue.poll();
+                System.out.println(current.data);
+                if(current.left != null){
+                    queue.offer(current.left);
+                }
+                if(current.right != null){
+                    queue.offer(current.right);
+                }
+            }
+        }
 
         private static class Node<T>{
         Node<T> left;
@@ -124,15 +234,10 @@ public class BinarySearchTree<T extends Comparable<T>> {
 
     public static void main(String[] args) {
         BinarySearchTree bTree = new BinarySearchTree();
-        bTree.insert(7);
-        bTree.insert(10);
-        bTree.insert(9);
         bTree.insert(2);
-        bTree.insert(4);
-        bTree.insert(5);
         bTree.insert(1);
-//        bTree.preOrder(bTree.root);
-//        bTree.inOrder(bTree.root);
-          bTree.postOrder(bTree.root);
+        bTree.insert(3);
+        bTree.postOrderWithoutRecurs();
+        bTree.layerTraverse();
     }
 }
