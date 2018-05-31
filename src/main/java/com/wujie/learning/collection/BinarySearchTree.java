@@ -43,7 +43,7 @@ public class BinarySearchTree<T extends Comparable<T>> {
             return false;
         }
         if(root == null){
-            root = new Node<T>(null,null,null,t);
+            root = new Node<T>(null,t);
             return true;
         }
 
@@ -51,7 +51,7 @@ public class BinarySearchTree<T extends Comparable<T>> {
         while(true){
             if(t.compareTo(x.data) < 0){
                if(x.left == null){
-                    x.left = new Node<T>(null,null, x, t);
+                    x.left = new Node<T>(x, t);
                     x.left.parent = x;
                     break;
                }else {
@@ -59,7 +59,7 @@ public class BinarySearchTree<T extends Comparable<T>> {
                }
             }else if(t.compareTo(x.data) > 0) {
                 if(x.right == null){
-                    x.right = new Node<T>(null,null,x,t);
+                    x.right = new Node<T>(x,t);
                     x.right.parent = x;
                     break;
                 }else {
@@ -300,9 +300,9 @@ public class BinarySearchTree<T extends Comparable<T>> {
         T data;
         int state;
 
-        Node(Node<T> left, Node<T> right, Node<T> parent, T data){
-            this.left = left;
-            this.right = right;
+        Node(Node<T> parent, T data){
+            this.left = null;
+            this.right = null;
             this.data = data;
             this.parent = parent;
         }
