@@ -37,7 +37,7 @@ public class BinarySearchTree<T extends Comparable<T>> {
         return false;
     }
 
-    //插入操作
+    //插入
     private boolean insert(T t){
         if(t == null){
             return false;
@@ -52,6 +52,7 @@ public class BinarySearchTree<T extends Comparable<T>> {
             if(t.compareTo(x.data) < 0){
                if(x.left == null){
                     x.left = new Node<T>(null,null, x, t);
+                    x.left.parent = x;
                     break;
                }else {
                     x = x.left;
@@ -59,6 +60,7 @@ public class BinarySearchTree<T extends Comparable<T>> {
             }else if(t.compareTo(x.data) > 0) {
                 if(x.right == null){
                     x.right = new Node<T>(null,null,x,t);
+                    x.right.parent = x;
                     break;
                 }else {
                     x = x.right;
@@ -69,6 +71,80 @@ public class BinarySearchTree<T extends Comparable<T>> {
             }
         }
         return true;
+    }
+
+    //删除
+    private void remove(Node<T> x){
+        Node<T> next ;
+        Node<T> child;
+        Node<T> p = x.parent;
+
+        //直接删除叶子结点
+        if(x.left == null && x.right == null){
+            //跟结点
+            if(p == null){
+                root = null;
+                return;
+            }
+            //分左右两种情况
+            if(p.left == x){
+                p.left = null;
+                return;
+            }else if (p.right == x){
+                p.right = null;
+                return;
+            }
+        }else if (x.left != null && x.right != null){ //中间结点就寻找中序后继，再递归调用
+            next = successor(x);
+            x.data = next.data;
+            remove(next);
+        }else {
+            if(x.left == null){
+                child = x.right;
+            }else {
+                child = x.left;
+            }
+            //跟结点
+            if(x == root){
+                root = child;
+                child.parent = null;
+                return;
+            }
+
+            if(x == p.left){
+                p.left = child;
+                child.parent = p;
+            }else {
+                p.right = child;
+                child.parent = p;
+            }
+        }
+
+
+    }
+
+    //传进来的当前节点作为根节点，因为是中序，所以下一个先查找右子树，再继续按照左中右的顺序循环查找左子树
+    //如果当前节点不存在右子树，先查找父节点，直到找到该节点是在某个祖先节点的左子树上
+    //说白了就是在中序遍历的时候寻找下一个结点
+    public Node<T> successor(Node<T> x) {
+        if (x == null)
+            return null;
+        Node<T> p;
+        if (x.right != null) {
+            p = x.right;
+            while (p.left != null) {
+                p = p.left;
+            }
+            return p;
+        }
+        else {
+            p = x.parent;
+            while (p != null && p.left != x) {
+                x = p;
+                p = x.parent;
+            }
+            return p;
+        }
     }
 
     //前序遍历（根 左 右）
@@ -232,34 +308,15 @@ public class BinarySearchTree<T extends Comparable<T>> {
         }
     }
 
-    public Node<T> successor(Node<T> n) {
-        if (n == null)
-            return null;
-        Node<T> p;
-        if (n.right != null) {
-            p = n.right;
-            while (p.left != null) {
-                p = p.left;
-            }
-            return p;
-        }
-        else {
-            p = n.parent;
-            while (p != null && p.left != n) {
-                n = p;
-                p = n.parent;
-            }
-            return p;
-        }
-    }
-
     public static void main(String[] args) {
         BinarySearchTree bTree = new BinarySearchTree();
+        bTree.insert(4);
         bTree.insert(2);
         bTree.insert(1);
         bTree.insert(3);
-        bTree.postOrderWithoutRecurs();
-        bTree.layerTraverse();
-
+        bTree.insert(5);
+        bTree.inOrderWithoutRecurs();
+        bTree.remove(bTree.root.left);
+        bTree.inOrderWithoutRecurs();
     }
 }
