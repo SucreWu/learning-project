@@ -1,82 +1,172 @@
 package com.wujie.learning.collection;
 
+import java.util.LinkedList;
+import java.util.Random;
+
 /**
  * @description:  链表
  * @author: wujie
  * @create: 2018-05-24 9:39
  **/
-public class MyLinkedList<E> {
+public class MyLinkedList<T> {
 
-    Node<E> first;
-    Node<E> last;
-    int size = 0;
+    Node<T> first;
+    Node<T> last;
+    int size;
 
-    public int size(){
-        return size;
+    public MyLinkedList(){
+
     }
 
-    public void add(E e){
-        linkLast(e);
+    /**
+     * 检查是否数组越界
+     * @param index
+     */
+    public void checkOutOfBounds(int index){
+        if(index < 0 || index > size){
+            throw new IndexOutOfBoundsException(String.format("index is: %d,size is: %d",index,size));
+
+        }
     }
 
-    public void add(int index,E e){
+    /**
+     * 二分查找，根据索引值返回对应节点
+     * @param index
+     * @return
+     */
+    private Node<T> node(int index){
         checkOutOfBounds(index);
-        //索引值等于数组长度时，直接添加至末尾，所以在判断数组越界的时候是>size 而不是>=size
-        if(index == size){
-            linkLast(e);
+        if (index > size>>1){
+            Node<T> x = last;
+            for(int i = 0;i < size - index;i++){
+                x = x.prev;
+            }
+            return x;
         }else{
-            linkBefore(e,node(index));
+            Node<T> x = first;
+            for(int i = 0;i < index -1;i++){
+                x = x.next;
+            }
+            return x;
         }
     }
 
-    public E remove(int index){
-        checkOutOfBounds(index);
-        return unlink(node(index));
-    }
-
-    //移除链表中首个值为e的节点
-    public boolean remove(E e){
-        if(e == null){
-            for(Node<E> x = first; x != null; x = x.next){
-                if(x.data == null){
-                    unlink(x);
-                    return true;
-                }
-            }
+    /**
+     * 替换索引位置的节点，并将新节点的next节点指向原节点
+     * @param t
+     * @param x
+     */
+    private void linkBefore(T t,Node<T> x){
+        Node<T> newNode = new Node<T>(x.prev,x,t);
+        if(x.prev == null){
+            first = newNode;
         }else {
-            for(Node<E> x = first; x != null; x = x.next){
-                if(e.equals(x.data)){
-                    unlink(x);
-                    return true;
-                }
-            }
+            x.prev.next = newNode;
         }
-        return false;
+        x.prev = newNode;
+        size++;
     }
 
-    public E set(int index,E e){
-        checkOutOfBounds(index);
-        Node<E> x = node(index);
-        E oldValue = x.data;
-        x.data = e;
-        return oldValue;
-    }
-    public boolean contains(E e){
-        return indexOf(e) != -1;
+    /**
+     * 根据t的值将新建的节点插入到链表尾部
+     * @param t
+     */
+    private void linkLast(T t){
+        Node<T> l = last;
+        Node<T> newNode = new Node<>(last,null,t);
+        if (last == null){
+            first = newNode;
+        }else {
+            l.next = newNode;
+        }
+        last = newNode;
+        size++;
     }
 
-    public int indexOf(E e){
+    /**
+     * 移除指定节点
+     * @param x
+     * @return
+     */
+    private T unlink(Node<T> x){
+        Node<T> next = x.next;
+        Node<T> prev = x.prev;
+        T t = x.data;
+        x.data = null;
+        //根据不同情况分别将next prev置为null，help GC
+        if (prev == null){
+            first = next;
+        }else {
+            prev.next = next;
+            x.prev = null;
+        }
+        if (next ==null){
+           last = prev;
+        }else {
+            next.prev = prev;
+            x.next = null;
+        }
+        size--;
+        return t;
+    }
+
+    /**
+     * 移除头结点，参数为first
+     * @param f
+     * @return
+     */
+    private T unlinkFirst(Node<T> f){
+        Node<T> x = f.next;
+        T t = f.data;
+        f.next = null;
+        f.data = null;
+        first = x;
+        if (x == null){
+           last = null;
+        }else {
+            x.prev = null;
+        }
+        size--;
+        return t;
+    }
+
+    /**
+     * 移除尾节点，参数为last
+     * @param l
+     * @return
+     */
+    private T unlinkLast(Node<T> l){
+        Node<T> x = l.prev;
+        T t = l.data;
+        l.prev = null;
+        l.data = null;
+        last = x;
+        if (x == null){
+            first = null;
+        }else {
+            x.next = null;
+        }
+        size--;
+        return t;
+    }
+
+    /**
+     * 返回指定元素索引位置
+     * @param t
+     * @return
+     */
+    private int indexOf(T t){
         int index = 0;
-        if(e == null){
-            for(Node<E> x = first; x != null; x = x.next){
-                if(x.data == null){
-                    return index;
-                }
-                index++;
-            }
+        if (t == null){
+           for(Node<T> x = first; x == null; x = x.next){
+               if (x.data == null){
+                   return index;
+               }
+               index++;
+           }
         }else {
-            for(Node<E> x = first; x != null; x = x.next){
-                if(e.equals(x.data)){
+            for(Node<T> x = first; x == null; x = x.next){
+                if (t.equals(x.data)){
                     return index;
                 }
                 index++;
@@ -85,111 +175,125 @@ public class MyLinkedList<E> {
         return -1;
     }
 
-    public E get(int index){
+    /**
+     * 是否包含指定元素
+     * @param t
+     * @return
+     */
+    public boolean contains(T t){
+        return indexOf(t) != -1;
+    }
+
+    /**
+     * 在链表末尾添加元素
+     * @param t
+     */
+    public void add(T t){
+        linkLast(t);
+    }
+
+    /**
+     * 在链表索引位置添加元素
+     * @param t
+     * @param index
+     */
+    public void add(T t,int index){
+        checkOutOfBounds(index);
+        if (index == size){
+            linkLast(t);
+        }else {
+            linkBefore(t,node(index));
+        }
+    }
+
+    /**
+     * 移除链表第一个元素
+     * @return
+     */
+    public T removeFirst(){
+        final Node<T> f = first;
+        if (f == null){
+            throw new NoSuchElementException();
+        }
+        return unlinkFirst(f);
+    }
+
+    /**
+     * 移除链表最后一个元素
+     * @return
+     */
+    public T removeLast(){
+        final Node<T> l = last;
+        if (l == null){
+            throw new NoSuchElementException();
+        }
+        return unlinkLast(l);
+    }
+
+    /**
+     * 移除链表索引位置的元素
+     * @param index
+     * @return
+     */
+    public T remove(int index){
+        checkOutOfBounds(index);
+        return unlink(node(index));
+    }
+
+
+    public T get(int index){
         checkOutOfBounds(index);
         return node(index).data;
     }
 
-    //在尾节点后添加新节点
-    public void linkLast(E e){
-        Node<E> l = last;
-        Node<E> newNode = new Node<E>(l,null,e);
-        last = newNode;
-        if(l == null){
-            first = newNode;
-        }else{
-            l.next = newNode;
-        }
-        size++;
-    }
-
-    //在指定节点前添加新节点
-    public void linkBefore(E e,Node<E> next){
-        Node<E> prev = next.prev;
-        Node<E> newNode = new Node<E>(prev,next,e);
-        if(prev == null){
-            first = newNode;
-        }else{
-            prev.next = newNode;
-        }
-        next.prev = newNode;
-        size++;
-    }
-
-    //移除指定节点
-    public E unlink(Node<E> x){
-        Node<E> prev = x.prev;
-        Node<E> next = x.next;
-        E oldValue = x.data;
-        x.data = null;
-        if(prev == null){
-            first = next;
-            // 这里不用置为null是因为在手动将x节点的三个成员变量都置为null后，会加速垃圾回收，自然会成为null
-            //next.prev = null;
-        }else {
-            prev.next = next;
-            x.prev = null;
-        }
-        if(next == null){
-            last = prev;
-        }else {
-            next.prev = prev;
-            x.next = null;
-        }
-        size--;
+    public T set(T t,int index){
+        checkOutOfBounds(index);
+        Node<T> x = node(index);
+        T oldValue = x.data;
+        x.data = t;
         return oldValue;
     }
 
-    //根据索引值返回对应节点
-    public Node<E> node(int index){
-        checkOutOfBounds(index);
-        if(index < size>>1){
-            Node<E> x = first;
-            for(int i = 0; i < index; i++){
-                x = x.next;
-            }
-            return x;
-        }else{
-            Node<E> x = last;
-            //注意index从0开始计数的，长度为3的数组，index最多就是2，所以从后往前查找时是size-1
-            for(int i = size-1; i > index;i--){
-                x = x.prev;
-            }
-            return x;
-        }
-    }
 
-    //检查数组是否越界
-    public void checkOutOfBounds(int index){
-        if(index < 0 || index > size){
-            throw new IndexOutOfBoundsException("index is : " + index + ",size is : " + size );
-        }
-    }
+    /**
+     * 内部节点类
+     * @param <T>
+     */
+    private static class Node<T>{
 
-    private static class Node<E>{
-        Node<E> prev;
-        Node<E> next;
-        E data;
+        Node<T> prev;
+        Node<T> next;
+        T data;
 
-        Node(Node<E> prev,Node<E> next,E data){
+        Node(Node<T> prev,Node<T> next,T data){
             this.prev = prev;
             this.next = next;
             this.data = data;
         }
     }
 
-    public static void main(String[] args) {
-        MyLinkedList list = new MyLinkedList();
-        list.add(1);
-        list.add("a");
-        list.add(3333L);
-        list.add(3,"zzzz");
-        list.remove(2);
-        list.set(2,"zzz");
-        System.out.println(list.indexOf("zzz"));
-        System.out.println(list.contains("zzz"));
-        for (int i = 0; i < list.size; i++) {
-            System.out.println(list.get(i));
+    /**
+     * 链表节点为空异常
+     */
+    public static class NoSuchElementException extends RuntimeException {
+
+        public NoSuchElementException() {
+            super();
         }
+
+        public NoSuchElementException(String s) {
+            super(s);
+        }
+    }
+
+    public static void main(String[] args) {
+
+        MyLinkedList<String> list= new MyLinkedList<String>();
+        list.add("1");
+        list.add("2");
+        list.add("3");
+        System.out.println(list.contains("3"));
+        System.out.println(list.remove(0));
+        System.out.println(list.get(0));
     }
 }
