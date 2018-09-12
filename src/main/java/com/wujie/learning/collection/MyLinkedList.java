@@ -1,7 +1,6 @@
 package com.wujie.learning.collection;
 
-import java.util.LinkedList;
-import java.util.Random;
+import com.sun.jmx.remote.internal.ArrayQueue;
 
 /**
  * @description:  链表
@@ -288,12 +287,15 @@ public class MyLinkedList<T> {
 
     public static void main(String[] args) {
 
-        MyLinkedList<String> list= new MyLinkedList<String>();
-        list.add("1");
-        list.add("2");
-        list.add("3");
-        System.out.println(list.contains("3"));
-        System.out.println(list.remove(0));
-        System.out.println(list.get(0));
+//        MyLinkedList<String> list= new MyLinkedList<String>();
+//        list.add("1");
+//        list.add("2");
+//        list.add("3");
+//        System.out.println(list.contains("3"));
+//        System.out.println(list.remove(0));
+//        System.out.println(list.get(0));
+        ArrayQueue<Integer> array = new ArrayQueue<Integer>(10);
+        array.add(3);
+
     }
 }
