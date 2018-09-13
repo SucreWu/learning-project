@@ -1,5 +1,7 @@
 package com.wujie.learning.leetcode;
 
+import java.util.HashMap;
+
 /**
  * 两数之和
  *
@@ -18,16 +20,28 @@ public class leetcode1 {
         for(int i = 0; i < nums.length; i++){
             for (int j = i+1; j < nums.length; j++){
                 if (nums[i] == target - nums[j]){
-                    return new int[]{nums[i] , nums[j]};
+                    return new int[]{i, j};
                 }
             }
         }
         return null;
     }
 
+    public static int[] twoSum2(int[] nums, int target) {
+        HashMap<Integer, Integer> map = new HashMap<>();
+        for (int i = 0; i < nums.length; i++){
+            int temp = target - nums[i];
+            if (map.containsKey(temp)){
+                return new int[]{i ,map.get(temp)};
+            }
+            map.put(nums[i], i);
+        }
+        return null;
+    }
+
     public static void main(String[] args) {
         int[] nums = {1,2,3,4};
-        nums = twoSum(nums,5);
+        nums = twoSum2(nums,5);
         System.out.println(nums[0] + "，" + nums[1]);
     }
 }
