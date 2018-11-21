@@ -11,7 +11,7 @@ package com.wujie.learning.leetcode;
  * 输出：7 -> 0 -> 8
  * 原因：342 + 465 = 807
  */
-public class leetcode2 {
+public class Leetcode2 {
 
     static class ListNode {
         int val;
