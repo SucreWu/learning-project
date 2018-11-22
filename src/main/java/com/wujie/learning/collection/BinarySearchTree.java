@@ -167,7 +167,7 @@ public class BinarySearchTree<T extends Comparable<T>> {
         Node<T> child;
         Node<T> parent = x.parent;
         // 第二种情况
-        if(x.left != null && x.right != null){
+        if (x.left != null && x.right != null){
             alternative = getSuccessor(x);
             x.data = alternative.data;
             // 把当前结点设置为后继结点，便于下面的删除
@@ -189,7 +189,7 @@ public class BinarySearchTree<T extends Comparable<T>> {
         // 第二种没有子结点的情况，也会在这里被删除（将父结点的左/右孩子置为null）
         if (x.parent == null){
             root = child;
-        }else if(x == x.parent.left){
+        }else if (x == x.parent.left){
             x.parent.left = child;
         }else {
             x.parent.right = child;
@@ -205,7 +205,7 @@ public class BinarySearchTree<T extends Comparable<T>> {
 //            } else {
 //                parent.right = null;
 //            }
-//        }else if(x.left != null && x.right != null){
+//        }else if (x.left != null && x.right != null){
 //            alternative = getSuccessor(x);
 //            x.data = alternative.data;
 //            remove(alternative); // 递归删除
@@ -259,8 +259,63 @@ public class BinarySearchTree<T extends Comparable<T>> {
         }
     }
 
-    //非递归前序遍历
-    public void preOrderWithoutRecurs() {
+    // 非递归前序遍历
+    public void preOrderWithoutRecurs1() {
+        Stack<Node<T>> stack = new Stack<>();
+        Node<T> current = null;
+        stack.push(root);
+        while (!stack.isEmpty()){
+            current = stack.pop();
+            if (current != null){
+                System.out.println(current.data);
+                stack.push(current.left);
+                stack.push(current.right);
+            }
+//            if (current != null){
+//                System.out.println(current.data);
+//                stack.push(current);
+//                current = current.left;
+//            }else {
+//                current = stack.pop();
+//                current = current.right;
+//            }
+        }
+    }
+
+    // 非递归中序遍历
+    public void inOrderWithoutRecurs1() {
+        Stack<Node<T>> stack = new Stack<>();
+        Node<T> current = root;
+        while ((!stack.isEmpty()) || (current != null)){
+            while (current != null){
+                stack.push(current);
+                current = current.left;
+            }
+            current = stack.pop();
+            System.out.println(current.data);
+            if (current.right != null){
+                current = current.right;
+            }else {
+                current = null;
+            }
+//            if (current != null){
+//                stack.push(current);
+//                current = current.left;
+//            }else {
+//                current = stack.pop();
+//                System.out.println(current.data);
+//                current = current.right;
+//            }
+        }
+    }
+
+    // 非递归后序遍历
+    public void postOrderWithoutRecurs1(){
+    }
+
+    // 模拟递归函数的函数栈，state抽象于当前执行到哪一步，非递归遍历的第二种实现
+    // 非递归前序遍历
+    public void preOrderWithoutRecurs2() {
         if (root == null) {
             return;
         }
@@ -268,18 +323,18 @@ public class BinarySearchTree<T extends Comparable<T>> {
         MyStack<Node<T>> stack = new MyStack<>(50);
         Node<T> current;
         stack.push(root);
-        while(!stack.isEmpty()){
+        while (!stack.isEmpty()){
             current = stack.getTop();
-            if(current.state == 0){
+            if (current.state == 0){
                 System.out.println(current.data);
                 current.state = 1;
             }else if (current.state == 1){
-                if(current.left != null){
+                if (current.left != null){
                     stack.push(current.left);
                 }
                 current.state = 2;
-            }else if(current.state == 2){
-                if(current.right != null){
+            }else if (current.state == 2){
+                if (current.right != null){
                     stack.push(current.right);
                 }
                 current.state = 3;
@@ -291,7 +346,7 @@ public class BinarySearchTree<T extends Comparable<T>> {
     }
 
     //非递归中序遍历
-    public void inOrderWithoutRecurs() {
+    public void inOrderWithoutRecurs2() {
         if (root == null){
             return;
         }
@@ -300,8 +355,8 @@ public class BinarySearchTree<T extends Comparable<T>> {
         stack.push(root);
         while(!stack.isEmpty()){
             current = stack.getTop();
-            if(current.state == 0){
-                if(current.left != null){
+            if (current.state == 0){
+                if (current.left != null){
                     stack.push(current.left);
                 }
                 current.state = 1;
@@ -309,7 +364,7 @@ public class BinarySearchTree<T extends Comparable<T>> {
                 System.out.println(current.data);
                 current.state = 2;
             }else if (current.state == 2){
-                if(current.right != null){
+                if (current.right != null){
                     stack.push(current.right);
                 }
                 current.state = 3;
@@ -321,7 +376,7 @@ public class BinarySearchTree<T extends Comparable<T>> {
     }
 
     //非递归后序遍历
-    public void postOrderWithoutRecurs(){
+    public void postOrderWithoutRecurs2(){
         if (root == null){
             return;
         }
@@ -330,17 +385,17 @@ public class BinarySearchTree<T extends Comparable<T>> {
         stack.push(root);
         while(!stack.isEmpty()){
             current = stack.getTop();
-            if(current.state == 0){
-                if(current.left != null){
+            if (current.state == 0){
+                if (current.left != null){
                     stack.push(current.left);
                 }
                 current.state = 1;
             }else if (current.state == 1){
-                if(current.right != null){
+                if (current.right != null){
                     stack.push(current.right);
                 }
                 current.state = 2;
-            }else if(current.state == 2){
+            }else if (current.state == 2){
                 System.out.println(current.data);
                 current.state = 3;
             }else if (current.state == 3){
@@ -361,13 +416,23 @@ public class BinarySearchTree<T extends Comparable<T>> {
         while(!queue.isEmpty()){
             current = queue.poll();
             System.out.println(current.data);
-            if(current.left != null){
+            if (current.left != null){
                 queue.offer(current.left);
             }
-            if(current.right != null){
+            if (current.right != null){
                 queue.offer(current.right);
             }
         }
     }
 
+    public static void main(String[] args) {
+        BinarySearchTree<Integer> btree = new BinarySearchTree<>();
+        btree.insert(5);
+        btree.insert(2);
+        btree.insert(7);
+        btree.insert(1);
+        btree.insert(9);
+        btree.insert(11);
+        btree.inOrderWithoutRecurs1();
+    }
 }
