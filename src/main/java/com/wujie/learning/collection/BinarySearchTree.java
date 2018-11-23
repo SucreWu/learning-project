@@ -11,12 +11,12 @@ public class BinarySearchTree<T extends Comparable<T>> {
 
     // 内部结点类
     class Node<T>{
-        public Node<T> left;
-        public Node<T> right;
-        public Node<T> parent;
-        public T data;
+        private Node<T> left;
+        private Node<T> right;
+        private Node<T> parent;
+        private T data;
         // 标记当前结点已经访问到哪一步。每次从子结点回溯回来的时候，都可以直接从当前结点里取出（用于非递归遍历的第二种实现）
-        public int state;
+        private int state;
 
         public Node(T data){
             this.data = data;
@@ -27,7 +27,7 @@ public class BinarySearchTree<T extends Comparable<T>> {
     Node<T> root ;
 
     // 查找二叉树的最小结点
-    private Node<T> minimum(Node<T> x){
+    public Node<T> minimum(Node<T> x){
         if (x == null){
             return null;
         }
@@ -38,7 +38,7 @@ public class BinarySearchTree<T extends Comparable<T>> {
     }
 
     // 查找二叉树的最小值
-    private T getMinimum(){
+    public T getMinimum(){
         Node<T> x = minimum(root);
         if (x != null){
             return x.data;
@@ -47,7 +47,7 @@ public class BinarySearchTree<T extends Comparable<T>> {
     }
 
     // 查找二叉树的最大结点
-    private Node<T> maximum(Node<T> x){
+    public Node<T> maximum(Node<T> x){
         if (x == null){
             return null;
         }
@@ -58,7 +58,7 @@ public class BinarySearchTree<T extends Comparable<T>> {
     }
 
     // 查找二叉树的最大值
-    private T getMaximum(){
+    public T getMaximum(){
         Node<T> x = maximum(root);
         if (x != null){
             return x.data;
@@ -66,9 +66,9 @@ public class BinarySearchTree<T extends Comparable<T>> {
         return null;
     }
 
-    // 获取后继结点，即二叉树中数据值大于该结点的最小结点
+    // 获取后继结点，即二叉树中数据值大于该结点的最小结点（等于中序遍历找到最小的左孩子，前继就是找最大的右孩子）
     // 首先明确一点，既然是数值大于该结点，那么不可能在当前节点的左子树中寻找，所以不用考虑该结点左孩子的情况
-    private Node<T> getSuccessor(Node<T> x){
+    public Node<T> getSuccessor(Node<T> x){
         // 如果存在右孩子，则后继结点是当前结点右子树的最小结点
         if (x.right != null){
             return minimum(x);
@@ -86,7 +86,7 @@ public class BinarySearchTree<T extends Comparable<T>> {
     }
 
     // 是否存在
-    private boolean contains(T t){
+    public boolean contains(T t){
         if (root == null || t == null){
             return false;
         }
@@ -105,7 +105,7 @@ public class BinarySearchTree<T extends Comparable<T>> {
     }
 
     // 根据特定的值查找结点
-    private Node<T> find(T t){
+    public Node<T> find(T t){
         if (root == null || t == null){
             return null;
         }
@@ -124,7 +124,7 @@ public class BinarySearchTree<T extends Comparable<T>> {
     }
 
     // 插入
-    private boolean insert(T t){
+    public boolean insert(T t){
         // 新结点
         Node<T> newNode = new Node<>(t);
         // 新结点的父结点
@@ -160,7 +160,7 @@ public class BinarySearchTree<T extends Comparable<T>> {
 
     // 删除，分三种情况，第一：左右孩子都为空的结点就直接删了，第二：左右都不为空，寻找二叉树中数据值大于该结点的最小结点（后继结点）
     // 第三：只有一个孩子结点，直接用孩子结点替换
-    private boolean remove(Node<T> x){
+    public boolean remove(Node<T> x){
         // 替代结点，用于第二种情况
         Node<T> alternative;
         // 左或者右孩子结点
@@ -233,7 +233,7 @@ public class BinarySearchTree<T extends Comparable<T>> {
 
     // 递归实现
     // 前序遍历（根 左 右）
-    private void preOrder(Node<T> x){
+    public void preOrder(Node<T> x){
         if (x.left != null){
             System.out.println(x.data);
             preOrder(x.left);
@@ -242,7 +242,7 @@ public class BinarySearchTree<T extends Comparable<T>> {
     }
 
     // 中序遍历（左 根 右）
-    private void inOrder(Node<T> x){
+    public void inOrder(Node<T> x){
         if (x.left != null){
             inOrder(x.left);
             System.out.println(x.data);
@@ -251,7 +251,7 @@ public class BinarySearchTree<T extends Comparable<T>> {
     }
 
     // 后序遍历（左 右 根）
-    private void postOrder(Node<T> x) {
+    public void postOrder(Node<T> x) {
         if (x.left != null) {
             postOrder(x.left);
             postOrder(x.right);
@@ -434,8 +434,8 @@ public class BinarySearchTree<T extends Comparable<T>> {
         }
     }
 
-    //按层遍历
-    private void layerTraverse(){
+    //按层遍历，丢到队列里先进先出
+    public void layerTraverse(){
         if (root == null){
             return;
         }
