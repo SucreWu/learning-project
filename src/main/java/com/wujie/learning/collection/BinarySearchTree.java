@@ -262,24 +262,26 @@ public class BinarySearchTree<T extends Comparable<T>> {
     // 非递归前序遍历
     public void preOrderWithoutRecurs1() {
         Stack<Node<T>> stack = new Stack<>();
-        Node<T> current = null;
-        stack.push(root);
-        while (!stack.isEmpty()){
-            current = stack.pop();
+        Node<T> current = root;
+        while ((!stack.isEmpty()) || (current != null)){
             if (current != null){
                 System.out.println(current.data);
-                stack.push(current.left);
-                stack.push(current.right);
+                stack.push(current);
+                current = current.left;
+            }else {
+                current = stack.pop();
+                current = current.right;
             }
-//            if (current != null){
-//                System.out.println(current.data);
-//                stack.push(current);
-//                current = current.left;
-//            }else {
-//                current = stack.pop();
-//                current = current.right;
-//            }
         }
+//        stack.push(root);
+//        while (!stack.isEmpty()) {
+//            current = stack.pop();
+//            if (current != null) {
+//                System.out.println(current.data);
+//                stack.push(current.left);
+//                stack.push(current.right);
+//            }
+//        }
     }
 
     // 非递归中序遍历
@@ -291,12 +293,12 @@ public class BinarySearchTree<T extends Comparable<T>> {
                 stack.push(current);
                 current = current.left;
             }
-            current = stack.pop();
-            System.out.println(current.data);
-            if (current.right != null){
+            // 如果栈不为空，说明上一步的左孩子已经全部入栈
+            if (!stack.isEmpty()){
+                current = stack.pop();
+                System.out.println(current.data);
+                // 因为入栈的结点的左孩子已经必入栈了，所以直接访问右孩子即可
                 current = current.right;
-            }else {
-                current = null;
             }
 //            if (current != null){
 //                stack.push(current);
@@ -310,7 +312,34 @@ public class BinarySearchTree<T extends Comparable<T>> {
     }
 
     // 非递归后序遍历
-    public void postOrderWithoutRecurs1(){
+    public void postOrderWithoutRecurs1() {
+        Stack<Node<T>> stack = new Stack<>();
+        Node<T> current = root;
+        // 用于记录已被访问过的右孩子结点
+        Node<T> prev = root;
+        while ((!stack.isEmpty()) || (current != null)) {
+            // 同中序一样都需要先把左孩子入栈
+            while (current != null){
+                stack.push(current);
+                current = current.left;
+            }
+            // 第二步去访问当前结点父结点(栈顶元素)的右孩子
+            if (!stack.isEmpty()){
+                // 获取栈顶元素的右孩子
+                Node<T> rightTemp = stack.peek().right;
+                // 判断右孩子是否为空或者被访问过
+                if (rightTemp == null || rightTemp == prev){
+                    current = stack.pop();
+                    System.out.println(current.data);
+                    prev = current;
+                    // 置为空，因为出栈的元素的左孩子已经被访问过，所以不用再判断
+                    current = null;
+                }else {
+                    // 存在右孩子，则继续遍历右孩子
+                    current = rightTemp;
+                }
+            }
+        }
     }
 
     // 模拟递归函数的函数栈，state抽象于当前执行到哪一步，非递归遍历的第二种实现
