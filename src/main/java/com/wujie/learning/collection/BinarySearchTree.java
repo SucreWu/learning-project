@@ -3,7 +3,7 @@ package com.wujie.learning.collection;
 import java.util.*;
 
 /**
- * @description: 二叉树
+ * @description: 二叉搜索树
  * @author: wujie
  * @create: 2018-05-24 15:09
  **/
