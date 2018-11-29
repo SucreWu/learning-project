@@ -35,6 +35,52 @@ public class RBTree<T extends Comparable<T>> {
     private RBNode<T> root;
 
     /**
+     * 根据值获取结点
+     * @param t
+     * @return
+     */
+    public RBNode<T> getNode(T t){
+        if (t == null) throw new NullPointerException("Value is null!");
+        RBNode<T> x = root;
+        while (x != null){
+            int compare = t.compareTo(x.vlaue);
+            if (compare < 0){
+                x = x.left;
+            }else if (compare > 0){
+                x = x.right;
+            }else{
+                return x;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * 中序后继
+     * @param x
+     * @return
+     */
+    public RBNode<T> successor(RBNode<T> x){
+        if (x == null){
+            return null;
+        }else if (x.right != null){
+            RBNode<T> r = x.right;
+            while (r.left != null){
+                r = r.left;
+            }
+            return r;
+        }else {
+            RBNode<T> p = x.parent;
+            while (p != null && p.right == x){
+                x = p;
+                p = p.parent;
+            }
+            return p;
+        }
+    }
+
+
+    /**
      * 左旋，传入旋转子树的根结点
      * @param p
      */
@@ -126,12 +172,13 @@ public class RBTree<T extends Comparable<T>> {
             // 先判断插入结点的父亲结点是祖父结点的左孩子还是右孩子，从而确定叔结点的位置
             if (x.parent == x.parent.parent.left){
                 RBNode<T> u = x.parent.parent.right;
-                // 叔结点为空的话，就直接进行旋转
+                // 叔结点也为红色，就将父结点，叔结点和祖父节点都变色，再从祖父节点开始检查
                 if (u != null && u.color == RED){
                     x.parent.color = BLACK;
-                    u.color = BLACK;
                     x.parent.parent.color = RED;
+                    u.color = BLACK;
                     x = x.parent.parent;
+                // 叔结点为空的话，就直接进行旋转
                 }else {
                     // 当前结点是父结点的右孩子，需要先对父结点进行左旋
                     if (x.parent.right == x){
@@ -163,4 +210,54 @@ public class RBTree<T extends Comparable<T>> {
         }
         root.color = BLACK;
     }
+
+    /**
+     * 删除
+     * @param t
+     */
+    public void delete(T t){
+        if (t == null) throw new NullPointerException("Value is null!");
+        RBNode<T> x = getNode(t);
+        if (x != null && x.left != null && x.right != null){
+            RBNode<T> s = successor(x);
+            // 先赋值，再指向s
+            x.vlaue = s.vlaue;
+            x = s;
+        }
+        RBNode<T> replacement = (x.left != null ? x.left : x.right);
+        if (replacement != null){
+            replacement.parent = x.parent;
+            if (x.parent == null){
+                root = replacement;
+            }else if (x.parent.left == x){
+                x.parent.left = replacement;
+            }else {
+                x.parent.right = replacement;
+            }
+            x.left = x.right = x.parent = null; // help GC
+            if (x.color == BLACK){
+                fixAfterDelete(replacement);
+            }
+        }else {
+            if (x.color == BLACK){
+                fixAfterDelete(x);
+            }
+
+            if (x.parent != null){
+                if (x.parent.left == x){
+                    x.parent.left = null;
+                }else {
+                    x.parent.right = null;
+                }
+            }
+            x.parent = null;// help GC
+        }
+    }
+
+    private void fixAfterDelete(RBNode<T> x) {
+        if (x != root && x.color == BLACK){
+            
+        }
+    }
+
 }
