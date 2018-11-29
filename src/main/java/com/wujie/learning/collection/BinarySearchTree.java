@@ -69,6 +69,9 @@ public class BinarySearchTree<T extends Comparable<T>> {
     // 获取后继结点，即二叉树中数据值大于该结点的最小结点（等于中序遍历找到最小的左孩子，前继就是找最大的右孩子）
     // 首先明确一点，既然是数值大于该结点，那么不可能在当前节点的左子树中寻找，所以不用考虑该结点左孩子的情况
     public Node<T> getSuccessor(Node<T> x){
+        if (x == null){
+            return null;
+        }
         // 如果存在右孩子，则后继结点是当前结点右子树的最小结点
         if (x.right != null){
             return minimum(x);
@@ -78,7 +81,7 @@ public class BinarySearchTree<T extends Comparable<T>> {
         // ②该结点是一个右孩子，查找x的最低父结点，且父结点必须具有左孩子，那么这个父结点就是x得后继结点
         Node<T> parent = x.parent;
 //        while ((parent != null) && (parent.right == x))
-        while ((parent != null) && (parent.left == null)){
+        while ((parent != null) && (parent.right == x)){
             x = parent;
             parent = parent.parent;
         }

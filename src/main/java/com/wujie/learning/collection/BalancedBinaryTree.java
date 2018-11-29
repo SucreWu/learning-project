@@ -1,5 +1,8 @@
 package com.wujie.learning.collection;
 
+import java.util.TreeMap;
+import java.util.concurrent.LinkedBlockingQueue;
+
 /**
  * @description: 平衡二叉树，遍历方法就不写了，请参考BinarySearchTree
  * @author: wujie
@@ -286,5 +289,8 @@ public class BalancedBinaryTree<T extends Comparable<T>>{
         // 计算高度
         root.height = Math.max(height(root.left), height(root.right)) + 1;
         return root;
+    }
+
+    public static void main(String[] args) {
     }
 }
