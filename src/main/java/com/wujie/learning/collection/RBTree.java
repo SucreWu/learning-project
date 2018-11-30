@@ -255,9 +255,70 @@ public class RBTree<T extends Comparable<T>> {
     }
 
     private void fixAfterDelete(RBNode<T> x) {
-        if (x != root && x.color == BLACK){
-            
+        while (x != root && x.color == BLACK){
+            // 需要调整的结点为父亲结点的左孩子
+            if (x == x.parent.left){
+                // 获取兄弟结点
+                RBNode<T> b = x.parent.right;
+                // 兄弟结点为红色，父结点一定为黑色
+                if (b.color == RED){
+                    b.color = BLACK;
+                    x.parent.color = RED;
+                    rotateLeft(x.parent);
+                    // 重置兄弟结点
+                    b = x.parent.right;
+                }
+                // 兄弟结点为黑色，且左右孩子都是黑色，只需把兄弟结点染成红色，兄弟结点的右子树就会满足平衡
+                // 但是此时祖父节点的平衡会被打破，需要向上回溯调整，将x结点指向父结点即可
+                if (b.left.color == BLACK && b.right.color == BLACK){
+                    b.color = RED;
+                    x = x.parent;
+                }else {
+                    // 当兄弟结点的左孩子为红色时，兄弟结点子树平衡被打破，需要右旋来恢复
+                    if (b.right.color == BLACK){
+                        b.left.color = BLACK;
+                        b.color = RED;
+                        rotateRight(b);
+                        // 重置兄弟结点
+                        b = x.parent.right;
+                    }
+                    // 兄弟结点的右孩子为红色，将兄弟结点染成父亲结点的颜色(红)，父亲结点染黑，兄弟结点右孩子也染黑
+                    // 用来保证性质：如果一个结点是红的，则它的两个儿子都是黑的
+                    b.color = x.parent.color;
+                    x.parent.color = BLACK;
+                    b.right.color = BLACK;
+                    rotateLeft(x.parent);
+                    // 此时已经调整完了，需要退出循环
+                    x = root;
+                }
+            }else {
+                RBNode<T> b = x.parent.left;
+                if (b.color == RED){
+                    b.color = BLACK;
+                    x.parent.color = RED;
+                    rotateRight(x.parent);
+                    b = x.parent.left;
+                }
+
+                if (b.left.color == BLACK && b.right.color == BLACK){
+                    b.color = RED;
+                    x = x.parent;
+                }else {
+                    if (b.left.color == BLACK){
+                        b.right.color = BLACK;
+                        b.color = RED;
+                        rotateLeft(b);
+                        b = x.parent.left;
+                    }
+                    b.color = x.parent.color;
+                    x.parent.color = BLACK;
+                    b.left.color = BLACK;
+                    rotateRight(x.parent);
+                    x = root;
+                }
+            }
         }
+        x.color = BLACK;
     }
 
 }
