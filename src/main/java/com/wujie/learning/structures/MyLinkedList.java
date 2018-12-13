@@ -1,4 +1,4 @@
-package com.wujie.learning.collection;
+package com.wujie.learning.structures;
 
 import com.sun.jmx.remote.internal.ArrayQueue;
 

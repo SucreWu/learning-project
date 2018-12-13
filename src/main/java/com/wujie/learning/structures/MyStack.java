@@ -1,7 +1,6 @@
-package com.wujie.learning.collection;
+package com.wujie.learning.structures;
 
 import java.util.ArrayList;
-import java.util.Stack;
 
 /**
  * @description: 栈（乱写的，非线程安全）

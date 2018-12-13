@@ -1,7 +1,4 @@
-package com.wujie.learning.collection;
-
-import java.util.TreeMap;
-import java.util.concurrent.LinkedBlockingQueue;
+package com.wujie.learning.structures;
 
 /**
  * @description: 平衡二叉树，遍历方法就不写了，请参考BinarySearchTree
