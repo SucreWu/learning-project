@@ -19,7 +19,12 @@ public class InvocationUserDao implements InvocationHandler {
 
     @Override
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-        System.out.println("log : " + method.getName() + " invoked with " + args.toString());
-        return method.invoke(target, args);
+        System.out.println("log : " + method.getName() + " invoked with " + args);
+        if ("delete".equals(method.getName())){
+            System.out.println("U can't invoke the delete method !");
+            return null;
+        }else {
+            return method.invoke(target, args);
+        }
     }
 }

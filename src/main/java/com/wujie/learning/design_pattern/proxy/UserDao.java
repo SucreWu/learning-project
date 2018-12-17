@@ -8,4 +8,6 @@ package com.wujie.learning.design_pattern.proxy;
  */
 public interface UserDao {
     void insert(int id);
+
+    void delete(int id);
 }

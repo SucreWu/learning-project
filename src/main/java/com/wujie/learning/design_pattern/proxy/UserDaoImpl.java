@@ -10,6 +10,10 @@ public class UserDaoImpl implements UserDao{
 
     @Override
     public void insert(int id) {
-        System.out.println("UserDaoImpl insert: " + id );
+        System.out.println("UserDaoImpl insert: " + id);
+    }
+
+    public void delete(int id) {
+        System.out.println("UserDaoImpl delete: " + id);
     }
 }

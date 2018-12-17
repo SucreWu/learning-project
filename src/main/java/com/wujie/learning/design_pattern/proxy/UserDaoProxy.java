@@ -22,6 +22,13 @@ public class UserDaoProxy implements UserDao{
         System.out.println(id + " has been inserted");
     }
 
+    @Override
+    public void delete(int id) {
+        System.out.println("Proxy log : " + id);
+        target.delete(id);
+        System.out.println(id + " has been deleted");
+    }
+
     public void setTarget(UserDao target) {
         this.target = target;
     }

@@ -23,5 +23,6 @@ public class Client {
                 new InvocationUserDao(target)
         );
         proxy.insert(123456);
+        proxy.delete(123456);
     }
 }
