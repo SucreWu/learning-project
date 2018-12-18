@@ -2,6 +2,7 @@ package com.wujie.learning.algorithm;
 
 /**
  * @Description: 插入排序
+ * 每步将一个待排序的纪录，按其关键码值的大小插入前面已经排序的文件中适当位置上，直到全部插入完为止。
  * @Auther: wujie
  * @Date: 2018/12/17 18:10
  * @version: V1.0
