@@ -35,12 +35,22 @@ public class ChooseSort {
      * @param array 必须是个int数组
      * @return queue
      */
-    static PriorityQueue<Integer> chooseSort2(int[] array){
+    static void chooseSort2(int[] array){
         PriorityQueue<Integer> queue = new PriorityQueue<>();
         for(int i : array){
             queue.offer(i);
         }
-        return queue;
+        int i = 0;
+        /*
+        直接取是不会有排序效果的
+        for(int j :queue){
+            array[i++] = j;
+        }
+        */
+        // 需要使用poll方法
+        while (!queue.isEmpty()){
+            array[i++] = queue.poll();
+        }
     }
 
     public static void main(String[] args) {
@@ -51,14 +61,9 @@ public class ChooseSort {
         }
         //-------------------------------我是分割线--------------------------------
         int[] a2 = {3,6,7,2,1,4,10,22,5};
-        PriorityQueue<Integer> queue = chooseSort2(a2);
-        // 直接取是不会有排序效果的
-        for(int i :queue){
+        chooseSort2(a2);
+        for(int i : a2){
             System.out.println(i);
-        }
-        // 需要使用poll方法
-        while (!queue.isEmpty()){
-            System.out.println(queue.poll());
         }
     }
 }
