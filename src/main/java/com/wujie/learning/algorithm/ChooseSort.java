@@ -11,7 +11,7 @@ import java.util.PriorityQueue;
  */
 public class ChooseSort {
 
-    static void chooseSort(int[] array){
+    static void chooseSort1(int[] array){
         int min, index = 0;
         for (int i = 0; i < array.length; i++){
             min = array[i];
@@ -53,9 +53,25 @@ public class ChooseSort {
         }
     }
 
+    // 简洁版
+    static void chooseSort3(int[] array){
+        int min, index = 0;
+        for (int i = 0; i < array.length; i++){
+            min = Integer.MAX_VALUE;
+            for (int j = i; j < array.length; j++){
+                if (min > array[j]){
+                    min = array[j];
+                    index = j;
+                }
+            }
+            array[index] = array[i];
+            array[i] = min;
+        }
+    }
+
     public static void main(String[] args) {
         int[] a = {3,6,7,2,1,4,10,22,5};
-        chooseSort(a);
+        chooseSort3(a);
         for(int i : a){
             System.out.println(i);
         }
