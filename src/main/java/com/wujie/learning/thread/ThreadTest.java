@@ -1,6 +1,5 @@
 package com.wujie.learning.thread;
 
-import sun.jvm.hotspot.memory.StringTable;
 
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.locks.AbstractQueuedSynchronizer;

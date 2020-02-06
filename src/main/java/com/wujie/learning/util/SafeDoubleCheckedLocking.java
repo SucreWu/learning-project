@@ -1,7 +1,5 @@
 package com.wujie.learning.util;
 
-import sun.jvm.hotspot.oops.Instance;
-
 /**
  * @Description: 双重检查锁
  * @Auther: wujie

@@ -1,6 +1,5 @@
 package com.wujie.learning.thread;
 
-import sun.nio.ch.ThreadPool;
 
 import java.sql.Connection;
 import java.util.LinkedList;

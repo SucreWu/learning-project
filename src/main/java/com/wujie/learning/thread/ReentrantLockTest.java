@@ -1,6 +1,5 @@
 package com.wujie.learning.thread;
 
-import javafx.concurrent.Worker;
 
 import java.util.LinkedList;
 import java.util.concurrent.ArrayBlockingQueue;
