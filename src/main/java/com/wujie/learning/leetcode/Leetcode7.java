@@ -73,6 +73,7 @@ public class Leetcode7 {
         for (int i = size - 1; i >= 0; i--) {
             result = 10 * result + (str.charAt(i) - '0');
         }
+        if (result < Integer.MIN_VALUE || result > Integer.MAX_VALUE) return  0;
         return flag ? (int) -result : (int) result;
     }
 
