@@ -64,10 +64,22 @@ public class Leetcode7 {
         return 0;
     }
 
+    public static int reverseNew(int x) {
+        String str = x + "";
+        boolean flag = str.charAt(0) == '-';
+        if (flag) str = str.substring(1);
+        int size = str.length();
+        long result = 0L;
+        for (int i = size - 1; i >= 0; i--) {
+            result = 10 * result + (str.charAt(i) - '0');
+        }
+        return flag ? (int) -result : (int) result;
+    }
+
     public static void main(String[] args) {
-        System.out.println(reverse(-123065346));
-        System.out.println(reverse(3450000));
-        System.out.println(reverse(4600345));
-        System.out.println(reverse(0));
+        System.out.println(reverseNew(-123065346));
+        System.out.println(reverseNew(3450000));
+        System.out.println(reverseNew(4600345));
+        System.out.println(reverseNew(0));
     }
 }
