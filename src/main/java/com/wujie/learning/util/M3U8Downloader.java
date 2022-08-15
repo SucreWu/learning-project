@@ -34,7 +34,7 @@ public class M3U8Downloader {
 	public static void main(String[] args) throws Exception {
 		
 		// m3u8文件的url
-		String m3u8Url = "https://0x3.jiajiago.org/media/upload-video/6e5/6e56cc8baf4b57f50363cc1c891f7264/m3u8/index.m3u8?_v=20211203&sign=1658297543-b8accbfb69a41b301d9805641018e90a-0-3811fe2b7534eb25128b48f62d546837";
+		String m3u8Url = "zzz";
     	
 		// 当前应用处理的数据、中间结果、最终结果的根目录
 		// workRootDirName目录下面包含3个目录：
