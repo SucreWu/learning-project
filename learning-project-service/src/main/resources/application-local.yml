@@ -1,0 +1,23 @@
+spring:
+#  rabbitmq:
+#    host: 127.0.0.1
+#    port: 8072
+#    username: root
+#    password: root
+#    virtualHost: /
+  servlet:
+    multipart:
+      max-file-size: 20MB
+      max-request-size: 20MB
+  cloud:
+    sentinel:
+#      enabled: false  todo 本地调试可关闭
+      transport:
+        dashboard: 127.0.0.1:8849
+    nacos:
+      discovery:
+        server-addr: 127.0.0.1:8848
+#  kafka:
+#    bootstrap-servers: 127.0.0.1:9092
+
+env: mq-dev-

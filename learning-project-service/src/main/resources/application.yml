@@ -1,0 +1,39 @@
+server:
+  port: 8080
+  servlet:
+    context-path: /learning-project
+    encoding:
+      charset: utf-8
+      forceResponse: true
+      enabled: true
+spring:
+  application:
+    name: learning-project
+  profiles:
+    active: local
+  main:
+    allow-bean-definition-overriding: true
+
+# 健康检查
+management:
+  endpoint:
+    enable: false
+    info:
+      enable: false
+    health:
+      enable: false
+      show-details: never
+  endpoints:
+    web:
+      exposure:
+        include: "health"
+
+# 允许替换feign原生的httpclient
+feign:
+  httpclient:
+    enabled: true
+
+logging:
+  file:
+    path: /home/ubuntu/project/${spring.application.name}/logs
+

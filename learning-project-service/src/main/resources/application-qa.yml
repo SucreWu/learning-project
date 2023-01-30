@@ -1,0 +1,7 @@
+apollo:
+  meta: http://127.0.0.1:8080/
+  bootstrap:
+    enabled: true
+    eagerLoad:
+      enabled: true
+    namespaces: application,COMMON.application,COMMON.application-qa
