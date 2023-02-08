@@ -1,5 +1,7 @@
 package com.wujie.learning.algorithm;
 
+import java.util.Arrays;
+
 /**
  * @Description: 插入排序
  * 每步将一个待排序的纪录，按其关键码值的大小插入前面已经排序的文件中适当位置上，直到全部插入完为止。
@@ -24,11 +26,40 @@ public class InsertSort {
         }
     }
 
-    public static void main(String[] args) {
-        int[] a = {3,6,7,2,1,4,10,22,5};
-        insertSort(a);
-        for(int i : a){
-            System.out.println(i);
+    // 从后往前insert，将较大的值放在数组尾部
+    public static void insertSort2(int[] array) {
+        for (int i = array.length - 2; i >= 0; i--) {
+            int temp = array[i];
+            int j = i + 1;
+            int insertIndex = i;
+            for (; j < array.length; j++) {
+                if (temp > array[j]) {
+                    array[j - 1] = array[j];
+                    insertIndex = j;
+                }
+            }
+            array[insertIndex] = temp;
         }
+    }
+
+    // 2的优化版，第二次循环的控制变量增加判断条件，当比大小中止时，j就是需要插入的位置
+    public static void insertSort3(int[] array) {
+        for (int i = array.length - 2; i >= 0; i--) {
+            int temp = array[i];
+            int j = i + 1;
+            for (; j < array.length && temp > array[j]; j++) {
+                array[j - 1] = array[j];
+            }
+            array[j - 1] = temp;
+        }
+    }
+
+    public static void main(String[] args) {
+        int[] a = {3,6,7,2,1,4,22,10,5};
+        insertSort(a);
+        System.out.println(Arrays.toString(a));
+        int[] b = {3,6,7,2,1,4,22,10,5};
+        insertSort2(b);
+        System.out.println(Arrays.toString(b));
     }
 }
